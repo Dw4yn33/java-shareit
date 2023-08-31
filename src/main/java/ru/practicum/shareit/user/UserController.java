@@ -38,13 +38,13 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public UserDto getUserById(@PathVariable("userId") long userId){
+    public UserDto getUserById(@PathVariable("userId") long userId) {
         log.info("Получен запрос на получение пользователеля с идентификатором " + userId);
         return userService.getUserById(userId);
     }
 
     @DeleteMapping("/{userId}")
-    public UserDto deleteUserById(@PathVariable("userId") long userId){
+    public UserDto deleteUserById(@PathVariable("userId") long userId) {
         log.info("Получен запрос на получение пользователеля с идентификатором " + userId);
         return userService.deleteUser(userId);
     }

@@ -15,6 +15,7 @@ public class UserRepository {
 
     private Long generatorId;
     private static final Map<Long, User> userMap = new HashMap<>();
+
     public UserRepository() {
         generatorId = 1L;
     }
@@ -34,8 +35,9 @@ public class UserRepository {
             if (user.getName() != null) ended.setName(user.getName());
             if (user.getEmail() != null) {
                 for (User test : userMap.values()) {
-                    if (!id.equals(test.getId()) && user.getEmail().equals(test.getEmail()))
+                    if (!id.equals(test.getId()) && user.getEmail().equals(test.getEmail())) {
                         throw new EmailDuplicateException("Два одинаковых email");
+                    }
                 }
                 ended.setEmail(user.getEmail());
             }
@@ -48,8 +50,7 @@ public class UserRepository {
     public UserDto getUserById(Long id) {
         if (!userMap.containsKey(id)) {
             throw new NotFoundException("Пользователя с идентификатором" + id + "не существует");
-        }
-        else return UserMapper.toUserDto(userMap.get(id));
+        } else return UserMapper.toUserDto(userMap.get(id));
     }
 
     public List<UserDto> getUsers() {

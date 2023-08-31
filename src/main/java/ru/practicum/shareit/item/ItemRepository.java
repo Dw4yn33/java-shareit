@@ -56,16 +56,14 @@ public class ItemRepository {
     public ItemDto getItemById(Long id) {
         if (!items.containsKey(id)) {
             throw new NotFoundException("Предмета с идентификатором " + id + "не существует");
-        }
-        else return ItemMapper.toItemDto(items.get(id));
+        } else return ItemMapper.toItemDto(items.get(id));
     }
 
     public List<ItemDto> getItemsOfOwner(Long ownerId) {
         List<ItemDto> itemList = new ArrayList<>();
         for (Item item : items.values()) {
             if (ownerId.equals(item.getOwner().getId())) itemList.add(ItemMapper.toItemDto(item));
-        }
-        return itemList;
+        } return itemList;
     }
 
     public List<ItemDto> getItemsFromSearch(String search) {
@@ -76,8 +74,7 @@ public class ItemRepository {
                     item.getDescription().toLowerCase().contains(search.toLowerCase()))) {
                 itemList.add(ItemMapper.toItemDto(item));
             }
-        }
-        return itemList;
+        } return itemList;
     }
 
     private void createItemValidation(Item item) {
