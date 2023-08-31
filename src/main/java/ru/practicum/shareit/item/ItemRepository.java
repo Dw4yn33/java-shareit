@@ -63,7 +63,8 @@ public class ItemRepository {
         List<ItemDto> itemList = new ArrayList<>();
         for (Item item : items.values()) {
             if (ownerId.equals(item.getOwner().getId())) itemList.add(ItemMapper.toItemDto(item));
-        } return itemList;
+        }
+        return itemList;
     }
 
     public List<ItemDto> getItemsFromSearch(String search) {
@@ -74,7 +75,8 @@ public class ItemRepository {
                     item.getDescription().toLowerCase().contains(search.toLowerCase()))) {
                 itemList.add(ItemMapper.toItemDto(item));
             }
-        } return itemList;
+        }
+        return itemList;
     }
 
     private void createItemValidation(Item item) {

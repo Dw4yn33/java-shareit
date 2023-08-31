@@ -64,8 +64,7 @@ public class UserRepository {
     public UserDto deleteUserById(Long id) {
         if (!userMap.containsKey(id)) {
             throw new NotFoundException("Пользователя с идентификатором" + id + "не существует");
-        }
-        else return UserMapper.toUserDto(userMap.remove(id));
+        } else return UserMapper.toUserDto(userMap.remove(id));
     }
 
     private void userCreateValidation(User user) {
