@@ -15,12 +15,12 @@ public class ItemServiceImpl implements ItemService {
     private final ItemRepository itemRepository;
 
     @Override
-    public ItemDto create(Long id, Item item) {
+    public ItemDto create(Long id, ItemDto item) {
         return itemRepository.create(id, item);
     }
 
     @Override
-    public ItemDto update(Long ownerId, Long itemId, Item item) {
+    public ItemDto update(Long ownerId, Long itemId, ItemDto item) {
         return itemRepository.update(ownerId, itemId, item);
     }
 

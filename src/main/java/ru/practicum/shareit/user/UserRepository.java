@@ -20,7 +20,8 @@ public class UserRepository {
         generatorId = 1L;
     }
 
-    public UserDto create(User user) {
+    public UserDto create(UserDto userDto) {
+        User user = UserMapper.toUser(userDto);
         userCreateValidation(user);
         if (!userMap.containsKey(user.getId())) {
             userMap.put(user.getId(), user);
@@ -28,7 +29,8 @@ public class UserRepository {
         return UserMapper.toUserDto(user);
     }
 
-    public UserDto update(Long id, User user) {
+    public UserDto update(Long id, UserDto userDto) {
+        User user = UserMapper.toUser(userDto);
         if (userMap.containsKey(id)) {
             User ended = userMap.get(id);
             ended.setId(id);
@@ -68,7 +70,7 @@ public class UserRepository {
     }
 
     private void userCreateValidation(User user) {
-        if (user.getName() == null || user.getName().isEmpty() || user.getName().isBlank() || user.getEmail() == null) {
+        if (user.getName() == null || user.getName().isBlank() || user.getEmail() == null) {
             throw new ValidationException("Ошибка валидации");
         }
         for (User test : userMap.values()) {
@@ -77,7 +79,7 @@ public class UserRepository {
         if (user.getId() == null) user.setId(generatorId++);
     }
 
-    public User getUserForSettingOwner(Long id) {
+    public static User getUserForSettingOwner(Long id) {
         if (userMap.containsKey(id)) {
             return userMap.get(id);
         } else throw new NotFoundException("Такого пользователя не существует");

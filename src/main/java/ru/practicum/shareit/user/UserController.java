@@ -20,13 +20,13 @@ public class UserController {
 
 
     @PostMapping
-    public UserDto create(@Valid @RequestBody User user) {
+    public UserDto create(@Valid @RequestBody UserDto user) {
         log.info("Получен запрос на добавление пользователя");
         return userService.create(user);
     }
 
     @PatchMapping("/{userId}")
-    public UserDto update(@PathVariable("userId") Long userId, @Valid @RequestBody User user) {
+    public UserDto update(@PathVariable("userId") Long userId, @Valid @RequestBody UserDto user) {
         log.info("Получен запрос на обновление информации о пользователе");
         return userService.update(userId, user);
     }

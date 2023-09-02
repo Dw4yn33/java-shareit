@@ -3,19 +3,16 @@ package ru.practicum.shareit.user;
 import lombok.Data;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 @Data
 public class UserDto {
 
-    @NotNull
+    //@NotNull
     private Long id;
-    @NotNull
-    @NotBlank
+    //@NotBlank
     private String name;
-    @NotNull
-    @Email
+    //@NotNull
+    @Email(message = "Not valid email")
     private String email;
 
     public UserDto(Long id, String name, String email) {

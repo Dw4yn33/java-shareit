@@ -11,11 +11,11 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
-    public UserDto create(User user) {
+    public UserDto create(UserDto user) {
         return userRepository.create(user);
     }
 
-    public UserDto update(Long id, User user) {
+    public UserDto update(Long id, UserDto user) {
         return userRepository.update(id, user);
     }
 

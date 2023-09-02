@@ -22,14 +22,14 @@ public class ItemController {
     private final ItemService itemService;
 
     @PostMapping
-    public ItemDto create(@RequestHeader(value = "X-Sharer-User-Id") Long id, @Valid @RequestBody Item item) {
+    public ItemDto create(@RequestHeader(value = "X-Sharer-User-Id") Long id, @RequestBody ItemDto item) {
         log.info("Получен запрос на добавление предмета");
         return itemService.create(id, item);
     }
 
     @PatchMapping("/{itemId}")
     public ItemDto update(@RequestHeader(value = "X-Sharer-User-Id") Long ownerId,
-                          @PathVariable("itemId") Long itemId, @Valid @RequestBody Item item) {
+                          @PathVariable("itemId") Long itemId, @RequestBody ItemDto item) {
         log.info("Получен запрос на обновление информации о предмете");
         return itemService.update(ownerId, itemId, item);
     }

@@ -8,6 +8,7 @@ import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.UserRepository;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,16 +20,14 @@ public class ItemRepository {
     private static final Map<Long, Item> items = new HashMap<>();
     private Long generatorId;
 
-    private final UserRepository userRepository;
-
     public ItemRepository() {
         generatorId = 1L;
-        userRepository = new UserRepository();
     }
 
-    public ItemDto create(Long ownerId, Item item) {
+    public ItemDto create(Long ownerId, @Valid ItemDto itemDto) {
+        Item item = ItemMapper.toItem(itemDto);
         if (ownerId != null && ownerId > 0) {
-            User user = userRepository.getUserForSettingOwner(ownerId);
+            User user = UserRepository.getUserForSettingOwner(ownerId);
             item.setOwner(user);
         } else throw new ValidationException("Предмет без владельца");
         createItemValidation(item);
@@ -38,7 +37,8 @@ public class ItemRepository {
         return ItemMapper.toItemDto(item);
     }
 
-    public ItemDto update(Long ownerId, Long itemId, Item item) {
+    public ItemDto update(Long ownerId, Long itemId, @Valid ItemDto itemDto) {
+        Item item = ItemMapper.toItem(itemDto);
         if (!items.containsKey(itemId)) {
             throw new NotFoundException("Предмета с идентификатором " + itemId + "не существует");
         }
@@ -80,10 +80,10 @@ public class ItemRepository {
     }
 
     private void createItemValidation(Item item) {
-        if (item.getName() == null || item.getName().isEmpty() || item.getDescription().isBlank()) {
+        if (item.getName() == null || item.getName().isBlank()) {
             throw new ValidationException("Пустое или неправильно введенное название предмета");
         }
-        if (item.getDescription() == null || item.getDescription().isEmpty() || item.getDescription().isBlank()) {
+        if (item.getDescription() == null || item.getDescription().isBlank()) {
             throw new ValidationException("Пустое или неправильно введенное описание предмета");
         }
         if (item.getAvailable() == null) {
