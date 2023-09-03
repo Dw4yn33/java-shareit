@@ -4,18 +4,18 @@ import lombok.Data;
 
 import javax.validation.constraints.Email;
 
-/**
- * TODO Sprint add-controllers.
- */
 @Data
-public class User {
+public class UserDto {
 
+    //@NotNull
     private Long id;
+    //@NotBlank
     private String name;
-    @Email
+    //@NotNull
+    @Email(message = "Not valid email")
     private String email;
 
-    public User(Long id, String name, String email) {
+    public UserDto(Long id, String name, String email) {
         this.id = id;
         this.name = name;
         this.email = email;
