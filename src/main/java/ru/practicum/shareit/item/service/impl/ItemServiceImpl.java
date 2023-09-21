@@ -94,11 +94,11 @@ public class ItemServiceImpl implements ItemService {
                     String.format("User with id %x is not the owner of item with id %x", userId, item.getId()));
         }
 
-        if (itemDto.getName() != null) {
+        if (itemDto.getName() != null && !itemDto.getName().isEmpty()) {
             item.setName(itemDto.getName());
         }
 
-        if (itemDto.getDescription() != null) {
+        if (itemDto.getDescription() != null && !itemDto.getDescription().isEmpty()) {
             item.setDescription(itemDto.getDescription());
         }
 

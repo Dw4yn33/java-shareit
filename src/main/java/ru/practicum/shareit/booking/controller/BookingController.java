@@ -28,7 +28,7 @@ public class BookingController {
 
     @GetMapping
     public List<BookingDto> getAllBookingsForUser(@RequestHeader(name = USER_ID_HEADER) Long userId,
-                                                  @RequestParam(required = false, defaultValue = "ALL") String state) {
+                                                  @RequestParam(defaultValue = "ALL") String state) {
         return bookingService.getAllBookingsForUser(userId, state);
     }
 

@@ -18,7 +18,7 @@ public class ItemDto {
 
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "Name can't be empty")
     private String name;
 
     @NotBlank
