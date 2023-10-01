@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import ru.practicum.shareit.user.dto.UserDto;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -18,6 +18,6 @@ public class ItemRequestDto {
 
     private UserDto requestor;
 
-    private LocalDate created;
+    private LocalDateTime created;
 
 }
