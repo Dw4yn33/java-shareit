@@ -63,6 +63,13 @@ public class ErrorHandlerTest {
     }
 
     @Test
+    void testAlreadyExistsException() {
+        AlreadyExistsException exception = new AlreadyExistsException("That email is already been using by someone");
+        ErrorResponse response = errorHandler.handleDuplicateEmailException(exception);
+        assertEquals(exception.getMessage(), response.getError());
+    }
+
+    @Test
     public void handleThrowableTest() {
         Exception exception = Mockito.mock(Exception.class);
 
