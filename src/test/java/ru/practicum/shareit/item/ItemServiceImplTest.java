@@ -3,9 +3,6 @@ package ru.practicum.shareit.item;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,33 +14,25 @@ import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.BookingRequestDto;
 import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.model.Status;
-import ru.practicum.shareit.booking.repository.BookingRepository;
 import ru.practicum.shareit.booking.service.BookingService;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.CommentRequestDto;
 import ru.practicum.shareit.item.dto.ItemDto;
-import ru.practicum.shareit.item.mapper.ItemMapper;
 import ru.practicum.shareit.item.model.Comment;
-import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.item.repository.CommentRepository;
-import ru.practicum.shareit.item.repository.ItemRepository;
+import ru.practicum.shareit.item.model.Item
 import ru.practicum.shareit.item.service.ItemService;
-import ru.practicum.shareit.item.service.ItemServiceImpl;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.mapper.UserMapper;
 import ru.practicum.shareit.user.model.User;
-import ru.practicum.shareit.user.repository.UserRepository;
 import ru.practicum.shareit.user.service.UserService;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 
 @SpringBootTest
 @AutoConfigureTestDatabase
@@ -231,11 +220,11 @@ public class ItemServiceImplTest {
                 .name(item.getName())
                 .description(item.getDescription())
                 .available(item.getAvailable()).build());
-        BookingDto bookingDto = bookingService.create(userDto2.getId(), BookingRequestDto.builder().
-                                                                        id(booking.getId()).
-                                                                        start(booking.getStartDate()).
-                                                                        end(booking.getEndDate()).
-                                                                        itemId(booking.getItem().getId()).build());
+        BookingDto bookingDto = bookingService.create(userDto2.getId(), BookingRequestDto.builder()
+                        .id(booking.getId())
+                        .start(booking.getStartDate())
+                        .end(booking.getEndDate())
+                        .itemId(booking.getItem().getId()).build());
         CommentDto commentDto = itemService.createComment(userDto2.getId(), itemDto1.getId(), commentRequestDto);
         assertNotNull(userDto1);
         assertNotNull(userDto2);
