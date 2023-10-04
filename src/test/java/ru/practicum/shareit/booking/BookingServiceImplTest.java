@@ -273,11 +273,11 @@ public class BookingServiceImplTest {
         Booking booking = query.setParameter("id", 1L).getSingleResult();
 
         assertEquals(booking.getStartDate().toString()
-                        .substring(0,booking.getStartDate().toString().length() - 2),
-                start.toString().substring(0,start.toString().length() - 5));
+                        .substring(0, 20),
+                start.toString().substring(0, 20));
         assertEquals(booking.getEndDate().toString()
-                        .substring(0,booking.getEndDate().toString().length() - 2),
-                end.toString().substring(0,end.toString().length() - 5));
+                        .substring(0, 20),
+                end.toString().substring(0, 20));
         assertEquals(booking.getItem().getId(), 1L);
         assertEquals(booking.getStatus(), Status.WAITING);
     }
