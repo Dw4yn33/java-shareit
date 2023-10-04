@@ -60,16 +60,11 @@ public class Booking {
         Booking booking = (Booking) o;
         return Objects.equals(getId(), booking.getId()) &&
                 (Objects.equals(getStartDate(), booking.getStartDate()) ||
-                Duration.between(getStartDate(), booking.getStartDate()).compareTo(Duration.ofNanos(1000)) < 1000) &&
+                        Duration.between(getStartDate(), booking.getStartDate()).compareTo(Duration.ofNanos(1000)) < 1000) &&
                 (Objects.equals(getEndDate(), booking.getEndDate()) ||
-                Duration.between(getEndDate(), booking.getEndDate()).compareTo(Duration.ofNanos(1000)) < 1000) &&
+                        Duration.between(getEndDate(), booking.getEndDate()).compareTo(Duration.ofNanos(1000)) < 1000) &&
                 Objects.equals(getItem(), booking.getItem()) &&
                 Objects.equals(getBooker(), booking.getBooker()) &&
                 getStatus() == booking.getStatus();
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getStartDate(), getEndDate(), getItem(), getBooker(), getStatus());
     }
 }

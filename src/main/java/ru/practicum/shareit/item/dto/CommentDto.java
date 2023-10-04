@@ -32,9 +32,4 @@ public class CommentDto {
                 (Objects.equals(getCreated(), that.getCreated()) ||
                         Duration.between(getCreated(), that.getCreated()).compareTo(Duration.ofNanos(1000)) < 1000);
     }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getText(), getAuthorName(), getCreated());
-    }
 }
