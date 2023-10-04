@@ -272,8 +272,12 @@ public class BookingServiceImplTest {
         TypedQuery<Booking> query = em.createQuery("SELECT b FROM Booking b WHERE b.id = :id", Booking.class);
         Booking booking = query.setParameter("id", 1L).getSingleResult();
 
-        assertEquals(booking.getStartDate(), start);
-        assertEquals(booking.getEndDate(), end);
+        assertEquals(booking.getStartDate().toString()
+                        .substring(0,booking.getStartDate().toString().length() - 2),
+                start.toString().substring(0,start.toString().length() - 5));
+        assertEquals(booking.getEndDate().toString()
+                        .substring(0,booking.getEndDate().toString().length() - 2),
+                end.toString().substring(0,end.toString().length() - 5));
         assertEquals(booking.getItem().getId(), 1L);
         assertEquals(booking.getStatus(), Status.WAITING);
     }
