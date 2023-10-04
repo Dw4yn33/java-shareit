@@ -161,6 +161,7 @@ public class ItemRepositoryJpaTest {
         List<Item> test = itemRepository.search("test", pageRequest);
         assertEquals(4, test.size());
     }
+
     @Test
     void testFindByRequestIdIn() {
         itemRepository.save(item3);
