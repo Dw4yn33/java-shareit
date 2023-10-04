@@ -1,5 +1,6 @@
 package ru.practicum.shareit.request;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.JsonTest;
@@ -27,7 +28,6 @@ public class ItemRequestWithItemsDtoJsonTest {
                 .description("test")
                 .created(created)
                 .build();
-
         JsonContent<ItemRequestWithItemsDto> jsonContent = jacksonTester.write(itemRequestWithItemsDto);
         assertThat(jsonContent).hasJsonPath("$.id");
         assertThat(jsonContent).hasJsonPath("$.description");
@@ -35,7 +35,7 @@ public class ItemRequestWithItemsDtoJsonTest {
         assertThat(jsonContent).extractingJsonPathNumberValue("$.id").isEqualTo(1);
         assertThat(jsonContent).extractingJsonPathStringValue("$.description").isEqualTo("test");
         assertThat(jsonContent).extractingJsonPathStringValue("$.created")
-                .isEqualTo(created.toString().substring(0,created.toString().length()));
+                .isEqualTo(created.toString());
     }
 
 }
