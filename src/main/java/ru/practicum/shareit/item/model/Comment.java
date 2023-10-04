@@ -15,7 +15,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -43,4 +45,21 @@ public class Comment {
 
     private LocalDateTime created;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Comment comment = (Comment) o;
+        return Objects.equals(getId(), comment.getId()) &&
+                Objects.equals(getText(), comment.getText()) &&
+                Objects.equals(getItem(), comment.getItem()) &&
+                Objects.equals(getAuthor(), comment.getAuthor()) &&
+                (Objects.equals(getCreated(), comment.getCreated()) ||
+                        Duration.between(getCreated(), comment.getCreated()).compareTo(Duration.ofNanos(1000)) < 1000);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getText(), getItem(), getAuthor(), getCreated());
+    }
 }
