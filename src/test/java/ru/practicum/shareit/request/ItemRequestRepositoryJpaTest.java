@@ -67,6 +67,7 @@ public class ItemRequestRepositoryJpaTest {
         ItemRequest request = requestRepository.findById(1L)
                 .orElseThrow(() -> new NotFoundException(String.format("Request with id %x not found!", 1L)));
         assertEquals(itemRequest, request);
+        assertEquals(itemRequest.hashCode(), request.hashCode());
     }
 
     @Test

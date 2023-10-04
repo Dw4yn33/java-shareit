@@ -93,6 +93,7 @@ public class CommentRepositoryJpaTest {
         Comment comment = commentRepository.findById(1L)
                 .orElseThrow(() -> new NotFoundException(String.format("Comment with id %x not found!", 1L)));
         assertEquals(comment1, comment);
+        assertEquals(comment1.hashCode(), comment.hashCode());
     }
 
     @Test

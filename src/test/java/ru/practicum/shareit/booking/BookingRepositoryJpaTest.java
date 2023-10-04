@@ -127,6 +127,7 @@ public class BookingRepositoryJpaTest {
         Booking test = bookingRepository.findById(1L)
                 .orElseThrow(() -> new NotFoundException(String.format("Booking with id %x not found!", 1L)));
         assertEquals(booking1, test);
+        assertEquals(booking1.hashCode(), test.hashCode());
     }
 
     @Test
