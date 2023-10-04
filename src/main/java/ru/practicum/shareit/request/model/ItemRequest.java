@@ -51,4 +51,9 @@ public class ItemRequest {
                 (Objects.equals(created, request.created) ||
                         Duration.between(created, request.created).compareTo(Duration.ofNanos(1000)) < 1000);
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, description, requestor, created);
+    }
 }

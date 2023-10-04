@@ -57,4 +57,9 @@ public class Comment {
                 (Objects.equals(getCreated(), comment.getCreated()) ||
                         Duration.between(getCreated(), comment.getCreated()).compareTo(Duration.ofNanos(1000)) < 1000);
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getText(), getItem(), getAuthor(), getCreated());
+    }
 }
