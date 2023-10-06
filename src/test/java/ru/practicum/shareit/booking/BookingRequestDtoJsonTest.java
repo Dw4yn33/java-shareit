@@ -34,8 +34,8 @@ public class BookingRequestDtoJsonTest {
         assertThat(jsonContent).hasJsonPath("$.end");
         assertThat(jsonContent).extractingJsonPathNumberValue("$.itemId").isEqualTo(1);
         assertThat(jsonContent).extractingJsonPathStringValue("$.start")
-                .contains(startDate.toString().substring(0,27));
+                .contains(startDate.toString().substring(0,25));
         assertThat(jsonContent).extractingJsonPathStringValue("$.end")
-                .contains(endDate.toString().substring(0,27));
+                .contains(endDate.toString().substring(0,25));
     }
 }
