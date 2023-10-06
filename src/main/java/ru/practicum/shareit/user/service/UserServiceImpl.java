@@ -1,29 +1,29 @@
-package ru.practicum.shareit.user.service.impl;
+package ru.practicum.shareit.user.service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.practicum.shareit.exeption.AlreadyExistException;
-import ru.practicum.shareit.exeption.NotFoundException;
+import org.springframework.transaction.annotation.Transactional;
+import ru.practicum.shareit.exception.AlreadyExistsException;
+import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.mapper.UserMapper;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repository.UserRepository;
-import ru.practicum.shareit.user.service.UserService;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
+@Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
 
-    private final UserMapper userMapper;
     private final UserRepository userRepository;
 
     @Override
     public List<UserDto> getAll() {
         return userRepository.findAll().stream()
-                .map(userMapper::toDto)
+                .map(UserMapper::toDto)
                 .collect(Collectors.toList());
     }
 
@@ -32,15 +32,17 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException(String.format("User with id %x not found!", userId)));
 
-        return userMapper.toDto(user);
+        return UserMapper.toDto(user);
     }
 
     @Override
+    @Transactional
     public UserDto create(UserDto userDto) {
-        return userMapper.toDto(userRepository.save(userMapper.toUser(userDto)));
+        return UserMapper.toDto(userRepository.save(UserMapper.toUser(userDto)));
     }
 
     @Override
+    @Transactional
     public UserDto update(Long userId, UserDto userDto) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException(String.format("User with id %x not found!", userId)));
@@ -48,13 +50,14 @@ public class UserServiceImpl implements UserService {
             user.setName(userDto.getName());
         }
         if (userDto.getEmail() != null && !userDto.getEmail().isEmpty()) {
-            checkForEmailUpdate(userId, userMapper.toUser(userDto));
+            checkForEmailUpdate(userId, UserMapper.toUser(userDto));
             user.setEmail(userDto.getEmail());
         }
-        return userMapper.toDto(userRepository.save(user));
+        return UserMapper.toDto(userRepository.save(user));
     }
 
     @Override
+    @Transactional
     public void delete(Long userId) {
         userRepository.deleteById(userId);
     }
@@ -62,7 +65,7 @@ public class UserServiceImpl implements UserService {
     private void checkForEmailUpdate(Long id, User user) {
         for (User check : userRepository.findAll()) {
             if (user.getEmail().equals(check.getEmail()) && !id.equals(check.getId())) {
-                throw new AlreadyExistException("That email is registered already by other user");
+                throw new AlreadyExistsException("That email is registered already by other user");
             }
         }
     }

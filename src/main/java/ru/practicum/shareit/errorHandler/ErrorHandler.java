@@ -7,12 +7,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import ru.practicum.shareit.exeption.AccessException;
-import ru.practicum.shareit.exeption.AvailableException;
-import ru.practicum.shareit.exeption.BookingItemByOwnerException;
-import ru.practicum.shareit.exeption.NotFoundException;
-import ru.practicum.shareit.exeption.StateException;
-import ru.practicum.shareit.exeption.ValidationException;
+import ru.practicum.shareit.exception.*;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -54,7 +49,8 @@ public class ErrorHandler {
         return new ErrorResponse("Validation error: " + errorMessage);
     }
 
-    @ExceptionHandler({ValidationException.class, AvailableException.class, StateException.class, AvailableException.class})
+    @ExceptionHandler({ValidationException.class, AvailableException.class, StateException.class,
+            PageableParamsException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleBadRequestException(final Exception e) {
         log.error("Available error. Status 400! {}", e.getMessage(), e);
@@ -72,6 +68,13 @@ public class ErrorHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleNotFoundException(final Exception e) {
         log.error("Not found error. Status 404! {}", e.getMessage(), e);
+        return new ErrorResponse(e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ErrorResponse handleDuplicateEmailException(final AlreadyExistsException e) {
+        log.error("Conflict error. Status 409! {}", e.getMessage(), e);
         return new ErrorResponse(e.getMessage());
     }
 

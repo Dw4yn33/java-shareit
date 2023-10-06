@@ -13,8 +13,8 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@EqualsAndHashCode
 @Entity
+@EqualsAndHashCode
 @Table(name = "users")
 public class User {
 
