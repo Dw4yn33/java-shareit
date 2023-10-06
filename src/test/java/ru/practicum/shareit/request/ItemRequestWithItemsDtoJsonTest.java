@@ -36,5 +36,4 @@ public class ItemRequestWithItemsDtoJsonTest {
         assertThat(jsonContent).extractingJsonPathStringValue("$.created")
                 .contains(created.toString().substring(0,27));
     }
-
 }

@@ -29,7 +29,6 @@ public class BookingRequestDtoJsonTest {
                 .end(endDate)
                 .build();
         JsonContent<BookingRequestDto> jsonContent = jacksonTester.write(bookingRequestDto);
-
         assertThat(jsonContent).hasJsonPath("$.itemId");
         assertThat(jsonContent).hasJsonPath("$.start");
         assertThat(jsonContent).hasJsonPath("$.end");
