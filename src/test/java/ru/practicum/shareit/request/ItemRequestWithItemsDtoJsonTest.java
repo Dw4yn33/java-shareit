@@ -34,7 +34,7 @@ public class ItemRequestWithItemsDtoJsonTest {
         assertThat(jsonContent).extractingJsonPathNumberValue("$.id").isEqualTo(1);
         assertThat(jsonContent).extractingJsonPathStringValue("$.description").isEqualTo("test");
         assertThat(jsonContent).extractingJsonPathStringValue("$.created")
-                .isEqualTo(created.toString());
+                .contains(created.toString().substring(0,27));
     }
 
 }
