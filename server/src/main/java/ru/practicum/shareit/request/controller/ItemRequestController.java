@@ -3,7 +3,6 @@ package ru.practicum.shareit.request.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,12 +17,8 @@ import ru.practicum.shareit.request.dto.ItemRequestWithItemsDto;
 import ru.practicum.shareit.request.service.ItemRequestService;
 import ru.practicum.shareit.utils.HttpHeaders;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
-@Validated
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "/requests")
@@ -41,8 +36,8 @@ public class ItemRequestController {
 
     @GetMapping("/all")
     public List<ItemRequestWithItemsDto> findAll(@RequestHeader(HttpHeaders.USER_ID_HEADER) Long userId,
-                                                 @PositiveOrZero @RequestParam(defaultValue = DEFAULT_FROM_VALUE) int from,
-                                                 @Positive @RequestParam(defaultValue = DEFAULT_SIZE_VALUE) int size) {
+                                                 @RequestParam(defaultValue = DEFAULT_FROM_VALUE) int from,
+                                                 @RequestParam(defaultValue = DEFAULT_SIZE_VALUE) int size) {
         PageRequest pageable = PageRequest.of(from / size, size, Sort.by("created").descending());
 
         return itemRequestService.findAll(userId, pageable);
@@ -56,7 +51,7 @@ public class ItemRequestController {
 
     @PostMapping
     public ItemRequestResponseDto createRequest(@RequestHeader(HttpHeaders.USER_ID_HEADER) Long userId,
-                                                @Valid @RequestBody CreateItemRequestDto createItemRequestDto) {
+                                                @RequestBody CreateItemRequestDto createItemRequestDto) {
         return itemRequestService.create(userId, createItemRequestDto);
     }
 

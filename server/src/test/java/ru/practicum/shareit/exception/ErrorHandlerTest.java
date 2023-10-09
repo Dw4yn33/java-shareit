@@ -5,6 +5,11 @@ import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import ru.practicum.shareit.errorHandler.ErrorHandler;
 import ru.practicum.shareit.errorHandler.ErrorResponse;
+import ru.practicum.shareit.exeption.AccessException;
+import ru.practicum.shareit.exeption.AvailableException;
+import ru.practicum.shareit.exeption.BookingItemByOwnerException;
+import ru.practicum.shareit.exeption.NotFoundException;
+import ru.practicum.shareit.exeption.ValidationException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -42,30 +47,9 @@ public class ErrorHandlerTest {
     }
 
     @Test
-    void testPageableParamsException() {
-        PageableParamsException exception = new PageableParamsException("Invalid from or size values entered");
-        ErrorResponse response = errorHandler.handleBadRequestException(exception);
-        assertEquals(exception.getMessage(), response.getError());
-    }
-
-    @Test
-    void testStateException() {
-        StateException exception = new StateException("Unknown state");
-        ErrorResponse response = errorHandler.handleBadRequestException(exception);
-        assertEquals(exception.getMessage(), response.getError());
-    }
-
-    @Test
     void testValidationException() {
         ValidationException exception = new ValidationException("The end date must be after the start date");
         ErrorResponse response = errorHandler.handleBadRequestException(exception);
-        assertEquals(exception.getMessage(), response.getError());
-    }
-
-    @Test
-    void testAlreadyExistsException() {
-        AlreadyExistsException exception = new AlreadyExistsException("That email is already been using by someone");
-        ErrorResponse response = errorHandler.handleDuplicateEmailException(exception);
         assertEquals(exception.getMessage(), response.getError());
     }
 

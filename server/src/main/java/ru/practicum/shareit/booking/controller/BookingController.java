@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,15 +15,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.BookingRequestDto;
+import ru.practicum.shareit.booking.model.State;
 import ru.practicum.shareit.booking.service.BookingService;
 import ru.practicum.shareit.utils.HttpHeaders;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
-@Validated
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "/bookings")
@@ -34,9 +30,9 @@ public class BookingController {
 
     @GetMapping
     public List<BookingDto> getAllBookingsForUser(@RequestHeader(name = HttpHeaders.USER_ID_HEADER) Long userId,
-                                                  @RequestParam(defaultValue = "ALL") String state,
-                                                  @PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
-                                                  @Positive @RequestParam(defaultValue = "10") Integer size) {
+                                                  @RequestParam(defaultValue = "ALL") State state,
+                                                  @RequestParam(defaultValue = "0") Integer from,
+                                                  @RequestParam(defaultValue = "10") Integer size) {
         Pageable pageable = PageRequest.of(from / size, size, Sort.by("startDate").descending());
 
         return bookingService.getAllBookingsForUser(userId, state, pageable);
@@ -50,9 +46,9 @@ public class BookingController {
 
     @GetMapping("/owner")
     public List<BookingDto> getAllItemsBookingForUser(@RequestHeader(name = HttpHeaders.USER_ID_HEADER) Long userId,
-                                                      @RequestParam(defaultValue = "ALL") String state,
-                                                      @PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
-                                                      @Positive @RequestParam(defaultValue = "10") Integer size) {
+                                                      @RequestParam(defaultValue = "ALL") State state,
+                                                      @RequestParam(defaultValue = "0") Integer from,
+                                                      @RequestParam(defaultValue = "10") Integer size) {
         Pageable pageable = PageRequest.of(from / size, size, Sort.by("startDate").descending());
 
         return bookingService.getAllItemsBookingForUser(userId, state, pageable);
@@ -60,7 +56,7 @@ public class BookingController {
 
     @PostMapping
     public BookingDto create(@RequestHeader(name = HttpHeaders.USER_ID_HEADER) Long userId,
-                             @Valid @RequestBody BookingRequestDto bookingRequestDto) {
+                             @RequestBody BookingRequestDto bookingRequestDto) {
         return bookingService.create(userId, bookingRequestDto);
     }
 

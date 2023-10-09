@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import ru.practicum.shareit.booking.controller.BookingController;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.BookingRequestDto;
+import ru.practicum.shareit.booking.model.State;
 import ru.practicum.shareit.booking.model.Status;
 import ru.practicum.shareit.booking.service.BookingService;
 import ru.practicum.shareit.item.dto.ItemDto;
@@ -86,7 +87,7 @@ public class BookingControllerTest {
     @Test
     void testGetAllBookingsForUser() throws Exception {
         Mockito
-                .when(bookingService.getAllBookingsForUser(Mockito.anyLong(), Mockito.anyString(), Mockito.any(Pageable.class)))
+                .when(bookingService.getAllBookingsForUser(Mockito.anyLong(), Mockito.any(State.class), Mockito.any(Pageable.class)))
                 .thenReturn(List.of(bookingDto));
 
         mvc.perform(get("/bookings")
@@ -97,7 +98,7 @@ public class BookingControllerTest {
                 .andExpect(jsonPath("$[0].item.id").value(bookingDto.getItem().getId()))
                 .andDo(print());
 
-        Mockito.verify(bookingService).getAllBookingsForUser(1L, "ALL", pageRequest);
+        Mockito.verify(bookingService).getAllBookingsForUser(1L, State.ALL, pageRequest);
     }
 
     @Test
@@ -117,7 +118,7 @@ public class BookingControllerTest {
     @Test
     void testGetAllItemsBookingForUser() throws Exception {
         Mockito
-                .when(bookingService.getAllItemsBookingForUser(Mockito.anyLong(), Mockito.anyString(),
+                .when(bookingService.getAllItemsBookingForUser(Mockito.anyLong(), Mockito.any(State.class),
                         Mockito.any(Pageable.class))).thenReturn(List.of(bookingDto));
 
         mvc.perform(get("/bookings/owner")
@@ -128,7 +129,7 @@ public class BookingControllerTest {
                 .andExpect(jsonPath("$[0].item.id").value(bookingDto.getItem().getId()))
                 .andDo(print());
 
-        Mockito.verify(bookingService).getAllItemsBookingForUser(1L, "ALL", pageRequest);
+        Mockito.verify(bookingService).getAllItemsBookingForUser(1L, State.ALL, pageRequest);
     }
 
     @Test

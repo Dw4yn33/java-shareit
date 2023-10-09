@@ -3,8 +3,7 @@ package ru.practicum.shareit.user.service;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.practicum.shareit.exception.AlreadyExistsException;
-import ru.practicum.shareit.exception.NotFoundException;
+import ru.practicum.shareit.exeption.NotFoundException;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.mapper.UserMapper;
 import ru.practicum.shareit.user.model.User;
@@ -46,13 +45,15 @@ public class UserServiceImpl implements UserService {
     public UserDto update(Long userId, UserDto userDto) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException(String.format("User with id %x not found!", userId)));
-        if (userDto.getName() != null && !userDto.getName().isEmpty()) {
-            user.setName(userDto.getName());
-        }
-        if (userDto.getEmail() != null && !userDto.getEmail().isEmpty()) {
-            checkForEmailUpdate(userId, UserMapper.toUser(userDto));
+
+        if (userDto.getEmail() != null) {
             user.setEmail(userDto.getEmail());
         }
+
+        if (userDto.getName() != null) {
+            user.setName(userDto.getName());
+        }
+
         return UserMapper.toDto(userRepository.save(user));
     }
 
@@ -62,11 +63,4 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(userId);
     }
 
-    private void checkForEmailUpdate(Long id, User user) {
-        for (User check : userRepository.findAll()) {
-            if (user.getEmail().equals(check.getEmail()) && !id.equals(check.getId())) {
-                throw new AlreadyExistsException("That email is registered already by other user");
-            }
-        }
-    }
 }

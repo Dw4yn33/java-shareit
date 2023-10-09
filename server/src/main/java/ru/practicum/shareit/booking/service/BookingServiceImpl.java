@@ -11,11 +11,10 @@ import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.model.State;
 import ru.practicum.shareit.booking.model.Status;
 import ru.practicum.shareit.booking.repository.BookingRepository;
-import ru.practicum.shareit.exception.AvailableException;
-import ru.practicum.shareit.exception.BookingItemByOwnerException;
-import ru.practicum.shareit.exception.NotFoundException;
-import ru.practicum.shareit.exception.StateException;
-import ru.practicum.shareit.exception.ValidationException;
+import ru.practicum.shareit.exeption.AvailableException;
+import ru.practicum.shareit.exeption.BookingItemByOwnerException;
+import ru.practicum.shareit.exeption.NotFoundException;
+import ru.practicum.shareit.exeption.ValidationException;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repository.ItemRepository;
 import ru.practicum.shareit.user.model.User;
@@ -37,15 +36,13 @@ public class BookingServiceImpl implements BookingService {
     private final BookingRepository bookingRepository;
 
     @Override
-    public List<BookingDto> getAllBookingsForUser(Long userId, String state, Pageable pageable) {
+    public List<BookingDto> getAllBookingsForUser(Long userId, State state, Pageable pageable) {
         userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException(String.format("User with id %x not found!", userId)));
 
         List<Booking> bookings = new ArrayList<>();
 
-        State stateVal = parseState(state);
-
-        switch (stateVal) {
+        switch (state) {
             case ALL:
                 bookings = bookingRepository.findAllForBooker(userId, pageable);
                 break;
@@ -87,7 +84,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<BookingDto> getAllItemsBookingForUser(Long userId, String state, Pageable pageable) {
+    public List<BookingDto> getAllItemsBookingForUser(Long userId, State state, Pageable pageable) {
         userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException(String.format("User with id %x not found!", userId)));
 
@@ -95,9 +92,7 @@ public class BookingServiceImpl implements BookingService {
         List<Long> itemsIds = items.stream().map(Item::getId).collect(Collectors.toList());
         List<Booking> bookings = new ArrayList<>();
 
-        State stateVal = parseState(state);
-
-        switch (stateVal) {
+        switch (state) {
             case ALL:
                 bookings = bookingRepository.findAllForItems(itemsIds, pageable);
                 break;
@@ -172,14 +167,6 @@ public class BookingServiceImpl implements BookingService {
         }
 
         return BookingMapper.toDto(bookingRepository.save(booking));
-    }
-
-    private State parseState(String state) {
-        try {
-            return State.valueOf(state);
-        } catch (IllegalArgumentException e) {
-            throw new StateException(String.format("Unknown state: %s", state));
-        }
     }
 
 }

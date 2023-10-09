@@ -18,11 +18,10 @@ import ru.practicum.shareit.booking.model.State;
 import ru.practicum.shareit.booking.model.Status;
 import ru.practicum.shareit.booking.service.BookingService;
 import ru.practicum.shareit.booking.service.BookingServiceImpl;
-import ru.practicum.shareit.exception.AvailableException;
-import ru.practicum.shareit.exception.BookingItemByOwnerException;
-import ru.practicum.shareit.exception.NotFoundException;
-import ru.practicum.shareit.exception.StateException;
-import ru.practicum.shareit.exception.ValidationException;
+import ru.practicum.shareit.exeption.AvailableException;
+import ru.practicum.shareit.exeption.BookingItemByOwnerException;
+import ru.practicum.shareit.exeption.NotFoundException;
+import ru.practicum.shareit.exeption.ValidationException;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.service.ItemService;
@@ -94,7 +93,7 @@ public class BookingServiceImplTest {
     void testGetAllBookingsForUserStatusAll() {
         bookingService.create(1L, bookingRequestDto);
 
-        List<BookingDto> bookingList = bookingService.getAllBookingsForUser(1L, State.ALL.name(), pageRequest);
+        List<BookingDto> bookingList = bookingService.getAllBookingsForUser(1L, State.ALL, pageRequest);
 
         assertEquals(bookingList.size(), 1);
         assertEquals(bookingList.get(0).getId(), 1L);
@@ -106,7 +105,7 @@ public class BookingServiceImplTest {
 
         bookingService.create(1L, bookingRequestDto);
 
-        List<BookingDto> bookingList = bookingService.getAllBookingsForUser(1L, State.PAST.name(), pageRequest);
+        List<BookingDto> bookingList = bookingService.getAllBookingsForUser(1L, State.PAST, pageRequest);
 
         assertEquals(bookingList.size(), 0);
     }
@@ -117,7 +116,7 @@ public class BookingServiceImplTest {
 
         bookingService.create(1L, bookingRequestDto);
 
-        List<BookingDto> bookingList = bookingService.getAllBookingsForUser(1L, State.FUTURE.name(), pageRequest);
+        List<BookingDto> bookingList = bookingService.getAllBookingsForUser(1L, State.FUTURE, pageRequest);
 
         assertEquals(bookingList.size(), 1);
         assertEquals(bookingList.get(0).getId(), 1L);
@@ -127,7 +126,7 @@ public class BookingServiceImplTest {
     void testGetAllBookingsForUserStatusCurrent() {
         bookingService.create(1L, bookingRequestDto);
 
-        List<BookingDto> bookingList = bookingService.getAllBookingsForUser(1L, State.CURRENT.name(), pageRequest);
+        List<BookingDto> bookingList = bookingService.getAllBookingsForUser(1L, State.CURRENT, pageRequest);
 
         assertEquals(bookingList.size(), 1);
         assertEquals(bookingList.get(0).getId(), 1L);
@@ -137,7 +136,7 @@ public class BookingServiceImplTest {
     void testGetAllBookingsForUserStatusWaiting() {
         bookingService.create(1L, bookingRequestDto);
 
-        List<BookingDto> bookingList = bookingService.getAllBookingsForUser(1L, State.WAITING.name(), pageRequest);
+        List<BookingDto> bookingList = bookingService.getAllBookingsForUser(1L, State.WAITING, pageRequest);
 
         assertEquals(bookingList.size(), 1);
         assertEquals(bookingList.get(0).getId(), 1L);
@@ -148,20 +147,10 @@ public class BookingServiceImplTest {
         bookingService.create(1L, bookingRequestDto);
         bookingService.updateStatus(2L, 1L, false);
 
-        List<BookingDto> bookingList = bookingService.getAllBookingsForUser(1L, State.REJECTED.name(), pageRequest);
+        List<BookingDto> bookingList = bookingService.getAllBookingsForUser(1L, State.REJECTED, pageRequest);
 
         assertEquals(bookingList.size(), 1);
         assertEquals(bookingList.get(0).getId(), 1L);
-    }
-
-    @Test
-    void testGetAllBookingsForUserStateError() {
-        bookingService.create(1L, bookingRequestDto);
-
-        StateException exception = assertThrows(StateException.class, () ->
-                bookingService.getAllBookingsForUser(1L, "TEST", pageRequest));
-
-        assertEquals(exception.getMessage(), "Unknown state: TEST");
     }
 
     @Test
@@ -169,7 +158,7 @@ public class BookingServiceImplTest {
         bookingService.create(1L, bookingRequestDto);
 
         NotFoundException exception = assertThrows(NotFoundException.class, () ->
-                bookingService.getAllBookingsForUser(3L, State.ALL.name(), pageRequest));
+                bookingService.getAllBookingsForUser(3L, State.ALL, pageRequest));
 
         assertEquals(exception.getMessage(), String.format("User with id %x not found!", 3L));
     }
@@ -197,7 +186,7 @@ public class BookingServiceImplTest {
     void testGetAllItemsBookingForUserStatusAll() {
         bookingService.create(1L, bookingRequestDto);
 
-        List<BookingDto> bookingList = bookingService.getAllItemsBookingForUser(2L, State.ALL.name(), pageRequest);
+        List<BookingDto> bookingList = bookingService.getAllItemsBookingForUser(2L, State.ALL, pageRequest);
 
         assertEquals(bookingList.size(), 1);
         assertEquals(bookingList.get(0).getId(), 1L);
@@ -207,7 +196,7 @@ public class BookingServiceImplTest {
     void testGetAllItemsBookingUserStatusPast() {
         bookingService.create(1L, bookingRequestDto);
 
-        List<BookingDto> bookingList = bookingService.getAllItemsBookingForUser(1L, State.PAST.name(), pageRequest);
+        List<BookingDto> bookingList = bookingService.getAllItemsBookingForUser(1L, State.PAST, pageRequest);
 
         assertEquals(bookingList.size(), 0);
     }
@@ -218,7 +207,7 @@ public class BookingServiceImplTest {
 
         bookingService.create(1L, bookingRequestDto);
 
-        List<BookingDto> bookingList = bookingService.getAllItemsBookingForUser(2L, State.FUTURE.name(), pageRequest);
+        List<BookingDto> bookingList = bookingService.getAllItemsBookingForUser(2L, State.FUTURE, pageRequest);
 
         assertEquals(bookingList.size(), 1);
         assertEquals(bookingList.get(0).getId(), 1L);
@@ -228,7 +217,7 @@ public class BookingServiceImplTest {
     void testGetAllItemsBookingUserStatusCurrent() {
         bookingService.create(1L, bookingRequestDto);
 
-        List<BookingDto> bookingList = bookingService.getAllItemsBookingForUser(2L, State.CURRENT.name(), pageRequest);
+        List<BookingDto> bookingList = bookingService.getAllItemsBookingForUser(2L, State.CURRENT, pageRequest);
 
         assertEquals(bookingList.size(), 1);
         assertEquals(bookingList.get(0).getId(), 1L);
@@ -238,7 +227,7 @@ public class BookingServiceImplTest {
     void testGetAllItemsBookingUserStatusWaiting() {
         bookingService.create(1L, bookingRequestDto);
 
-        List<BookingDto> bookingList = bookingService.getAllItemsBookingForUser(2L, State.WAITING.name(), pageRequest);
+        List<BookingDto> bookingList = bookingService.getAllItemsBookingForUser(2L, State.WAITING, pageRequest);
 
         assertEquals(bookingList.size(), 1);
         assertEquals(bookingList.get(0).getId(), 1L);
@@ -249,7 +238,7 @@ public class BookingServiceImplTest {
         bookingService.create(1L, bookingRequestDto);
         bookingService.updateStatus(2L, 1L, false);
 
-        List<BookingDto> bookingList = bookingService.getAllItemsBookingForUser(2L, State.REJECTED.name(), pageRequest);
+        List<BookingDto> bookingList = bookingService.getAllItemsBookingForUser(2L, State.REJECTED, pageRequest);
 
         assertEquals(bookingList.size(), 1);
         assertEquals(bookingList.get(0).getId(), 1L);
@@ -260,7 +249,7 @@ public class BookingServiceImplTest {
         bookingService.create(1L, bookingRequestDto);
 
         NotFoundException exception = assertThrows(NotFoundException.class, () ->
-                bookingService.getAllItemsBookingForUser(3L, State.ALL.name(), pageRequest));
+                bookingService.getAllItemsBookingForUser(3L, State.ALL, pageRequest));
 
         assertEquals(exception.getMessage(), String.format("User with id %x not found!", 3L));
     }
@@ -272,12 +261,8 @@ public class BookingServiceImplTest {
         TypedQuery<Booking> query = em.createQuery("SELECT b FROM Booking b WHERE b.id = :id", Booking.class);
         Booking booking = query.setParameter("id", 1L).getSingleResult();
 
-        assertEquals(booking.getStartDate().toString()
-                        .substring(0, 20),
-                start.toString().substring(0, 20));
-        assertEquals(booking.getEndDate().toString()
-                        .substring(0, 20),
-                end.toString().substring(0, 20));
+        assertEquals(booking.getStartDate().toString().substring(0,20), start.toString().substring(0,20));
+        assertEquals(booking.getEndDate().toString().substring(0,20), end.toString().substring(0,20));
         assertEquals(booking.getItem().getId(), 1L);
         assertEquals(booking.getStatus(), Status.WAITING);
     }

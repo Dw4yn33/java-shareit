@@ -1,6 +1,10 @@
 package ru.practicum.shareit.request.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import ru.practicum.shareit.user.model.User;
 
 import javax.persistence.Entity;
@@ -16,7 +20,6 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
 @Builder
 @Entity
 @Table(name = "requests")
@@ -34,4 +37,5 @@ public class ItemRequest {
 
     @Builder.Default
     private LocalDateTime created = LocalDateTime.now();
+
 }

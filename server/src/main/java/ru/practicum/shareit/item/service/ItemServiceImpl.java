@@ -7,9 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.dto.BookingItemDto;
 import ru.practicum.shareit.booking.mapper.BookingMapper;
 import ru.practicum.shareit.booking.repository.BookingRepository;
-import ru.practicum.shareit.exception.AccessException;
-import ru.practicum.shareit.exception.AvailableException;
-import ru.practicum.shareit.exception.NotFoundException;
+import ru.practicum.shareit.exeption.AccessException;
+import ru.practicum.shareit.exeption.AvailableException;
+import ru.practicum.shareit.exeption.NotFoundException;
 import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.CommentRequestDto;
 import ru.practicum.shareit.item.dto.ItemDto;
@@ -93,11 +93,11 @@ public class ItemServiceImpl implements ItemService {
                     String.format("User with id %x is not the owner of item with id %x", userId, item.getId()));
         }
 
-        if (itemDto.getName() != null && !itemDto.getName().isEmpty()) {
+        if (itemDto.getName() != null) {
             item.setName(itemDto.getName());
         }
 
-        if (itemDto.getDescription() != null && !itemDto.getDescription().isEmpty()) {
+        if (itemDto.getDescription() != null) {
             item.setDescription(itemDto.getDescription());
         }
 
